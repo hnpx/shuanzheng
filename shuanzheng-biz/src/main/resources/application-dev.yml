@@ -1,0 +1,163 @@
+# 加解密根密码
+jasypt:
+  encryptor:
+    password: pig #根密码
+
+server:
+  port: 8081
+
+spring:
+  datasource:
+    username: root
+    password: root
+    url: jdbc:mysql://127.0.0.1/yl_shuanzheng?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&allowMultiQueries=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=Asia/Shanghai
+  redis:
+    password:
+    host: 192.168.5.100
+    port: 6479
+    database: 4
+
+file:
+  temporary: F:/tmp/file
+
+fastfile:
+  method: cos
+  #temp-dir: F:/data
+  temp-dir: /data/sftp/mysftp
+  root-dir: file
+  qiniu:
+    access-key:
+    secret-key:
+    bucket-name:
+  cos:
+    region: ap-beijing
+    bucket: szrj-1305121292
+    secret-id:
+    secret-key:
+  sftp:
+    host: 127.0.0.1
+    port: 22
+    username:
+    password:
+    timeout: 50000
+    aliveMax: 10
+    enable: true
+  sites:
+    - key: szrj-1305121292
+      accept: jpeg,png,jpg,gif,mp4,avi,rmvb,mkv,pdf,pptx,doc,docx,xls,xlsx,m4a,wav,mp3,aac,mp4,3gp
+      sync: true
+      url: https://szrj-1305121292.cos.ap-beijing.myqcloud.com/
+      #     shrink:
+      ##        - enable: true
+      ##          scale: 0.3
+      result:
+        name: kname
+        path: kpath
+        type: ktype
+        shrink: sim
+  types:
+    - type: jpeg
+      checkHeader: false
+      header: FFD8FF
+      ftype: img
+    - type: jpg
+      checkHeader: false
+      header: "FFD8FF"
+      ftype: img
+    - type: png
+      checkHeader: false
+      header: "89504E47"
+      ftype: img
+    - type: gif
+      checkHeader: false
+      header: "47494638"
+      ftype: img
+    - type: avi
+      checkHeader: false
+      header: "47494638"
+      checkLen: true
+      ftype: video
+    - type: rmvb
+      checkHeader: false
+      header: "47494638"
+      ftype: video
+    - type: mkv
+      checkHeader: false
+      header: "47494638"
+      ftype: video
+    - type: pdf
+      checkHeader: false
+      header: "47494638"
+      ftype: doc
+    - type: pptx
+      checkHeader: false
+      header: "47494638"
+      ftype: doc
+    - type: doc
+      checkHeader: false
+      header: "47494638"
+      ftype: doc
+    - type: docx
+      checkHeader: false
+      header: "47494638"
+      ftype: doc
+    - type: xls
+      checkHeader: false
+      header: "47494638"
+      ftype: doc
+    - type: xlsx
+      checkHeader: false
+      header: "47494638"
+      ftype: doc
+    - type: m4a
+      checkHeader: false
+      header: "47494638"
+      checkLen: true
+      ftype: audio
+    - type: wav
+      checkHeader: false
+      header: "47494638"
+      checkLen: true
+      ftype: audio
+    - type: mp3
+      checkHeader: false
+      header: "47494638"
+      checkLen: true
+      ftype: audio
+    - type: aac
+      checkHeader: false
+      header: "47494638"
+      checkLen: true
+      ftype: audio
+    - type: mp4
+      checkHeader: false
+      header: "47494638"
+      checkLen: true
+      ftype: video
+    - type: 3gp
+      checkHeader: false
+      header: "47494638"
+      checkLen: true
+      ftype: video
+  multipart:
+    max-file-size: -1
+    max-request-size: -1
+
+fastmsg:
+  sms:
+    domain: dysmsapi.aliyuncs.com
+    access-key-id:
+    access-secret:
+    region-id: cn-hangzhou
+    enable: true
+  mp:
+    appid:
+    secret:
+  sms-temps:
+    - key: registMsg
+      id: SMS_209275056
+      msg-temp: 在洛阳
+  mp-temps:
+    - key: problemAnswer   #新评论回复通知
+      id: IxamzBOxlxrlU_Ikku0mgzAd00lIEZnbAJAfk32wI1A
+      msg-temp: pagesA/pages/ask/detail

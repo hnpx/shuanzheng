@@ -1,0 +1,243 @@
+# 加解密根密码
+jasypt:
+  encryptor:
+    password: pig #根密码
+
+server:
+  port: 8081
+
+spring:
+  application:
+    name: shuanzheng
+  profiles:
+    active: dev
+
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    hikari:
+      minimum-idle: 10
+      # 空闲连接存活最大时间，默认600000（10分钟）
+      idle-timeout: 60000
+      # 连接池最大连接数，默认是10
+      maximum-pool-size: 1000
+      # 此属性控制从池返回的连接的默认自动提交行为,默认值：true
+      auto-commit: true
+      # 连接池名称
+      pool-name: MyHikariCP
+      # 此属性控制池中连接的最长生命周期，值0表示无限生命周期，默认1800000即30分钟
+      max-lifetime: 1800000
+      # 数据库连接超时时间,默认30秒，即30000
+      connection-timeout: 60000
+      connection-test-query: SELECT 1
+
+  main:
+    allow-bean-definition-overriding: true
+  freemarker:
+    allow-request-override: false
+    allow-session-override: false
+    cache: true
+    charset: UTF-8
+    check-template-location: true
+    content-type: text/html
+    enabled: true
+    expose-request-attributes: false
+    expose-session-attributes: false
+    expose-spring-macro-helpers: true
+    prefer-file-system-access: true
+    suffix: .ftl
+    template-loader-path: classpath:/templates/
+  inetutils:
+    # 忽略网卡，eth.*，正则表达式
+    ignored-interfaces: eth.*
+    preferred-networks: ${discovery.server-ip}
+  servlet:
+    multipart:
+      max-request-size: 100MB #总文件大小
+      max-file-size: 100MB #单个文件大小
+
+# 暴露监控端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+#请求处理的超时时间
+ribbon:
+  ReadTimeout: 10000
+  ConnectTimeout: 10000
+
+# mybaits-plus配置
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*Mapper.xml
+  global-config:
+    banner: false
+    db-config:
+      id-type: auto
+      table-underline: true
+      logic-delete-value: 1
+      logic-not-delete-value: 0
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+# spring security 配置
+security:
+  encode:
+    # 前端密码密钥，必须16位
+    key: 'thanks,pig4cloud'
+  oauth2:
+    # 通用放行URL，服务个性化，请在对应配置文件覆盖
+    ignore:
+      urls:
+        - /v2/api-docs
+        - /actuator/**
+        - /ser/**
+        - test
+        - /api/**
+        - /fastfile/**
+# swagger 配置
+swagger:
+  title: Swagger API
+  # host: localhost:8080
+  # license: Powered By pig4cloud
+  # licenseUrl: https://pig4cloud.com
+  # terms-of-service-url: https://pig4cloud.com
+  contact:
+    email: zly@hnpinxun.cn
+    url: http://www.hnpinxun.cn
+  authorization:
+    name: PxOAuth
+    auth-regex: ^.*$
+    #    authorization-scope-list:
+    #      - scope: server
+    #        description: server all
+    token-url-list:
+      - http://localhost:8081/oauth/check_token
+
+api:
+  token-key: Authorization
+  jwt-secret: abcdefghabcdefghabcdefghabcdefgh
+  jwt-expire-seconds: 86400
+  skip-paths: /api/user/login,/api/user/wxlogin,/api/home,/api/user/sendsms,/api/szvote,/api/guide/list,/api/ranking,/api/task/info/read/list,/api/suggest/list,/api/suggest/detail,/api/home/read/service
+
+application:
+  home:
+    cache-key: HOME-INFO-KEY
+    cache-timeout: 30
+    notice-len: 5
+    farm-len: 5
+    org-cate-len: 5
+    org-content-len: 5
+  shop:
+    goods-len: 10
+  task:
+    record-len: 5
+  ranking:
+    record-len: 5 #播报信息条数
+    top-len: 3 #排行榜头部信息条数
+    cache-timeout: 300000 #缓存过期时间
+    cache-key: RANKING-INFO-KEY #缓存key
+fastconversion:
+  type: excel
+  out-dir: F:/data/excel #文件输出目录
+  mould-dir: F:/data/mould #文件模板位置
+  temp-dir: F:/data/temp #临时文件输出根目录
+  excel-config:
+    title-row: 0 #标题所在行
+    start-row: 1 #数据起始行，如果不设置从标题开始
+    max-row: 99999 #数据最大行数，如果不设置，最大为999999
+
+  relations:
+    - key: farminfo
+      adapter: farmInfoSaveAdapter
+      sync: true
+      relations:
+        - key: village #数据参数
+          val: 所在村 #Excel中标题名称
+          type: str #数据类型，目前包含str\int\float\img\time，如果是img类型，将自动下载文件到临时目录，并输出到目标目录中
+          out-dir: village #如果是img，则必填，与上层配置中的out-dir结合输出，目前是/data/excel/name
+          export-is: 1
+          validator:
+            required: true #是否必填
+            min-len: 0 #最小长度
+            max-len: 50 #最大长度
+
+        - key: group #数据参数
+          val: 所在村组 #Excel中标题名称
+          type: str #数据类型，目前包含str\int\float\img\time，如果是img类型，将自动下载文件到临时目录，并输出到目标目录中
+          out-dir: group #如果是img，则必填，与上层配置中的out-dir结合输出，目前是/data/excel/name
+          export-is: 1
+          validator:
+            required: true #是否必填
+            min-len: 0 #最小长度
+            max-len: 50 #最大长度
+
+        - key: number #数据参数
+          val: 户号（门牌号） #Excel中标题名称
+          type: str #数据类型，目前包含str\int\float\img\time，如果是img类型，将自动下载文件到临时目录，并输出到目标目录中
+          out-dir: number #如果是img，则必填，与上层配置中的out-dir结合输出，目前是/data/excel/name
+          export-is: 1
+          validator:
+            required: false #是否必填
+            min-len: 0 #最小长度
+            max-len: 50 #最大长度
+
+        - key: name #数据参数
+          val: 姓名 #Excel中标题名称
+          type: str #数据类型，目前包含str\int\float\img\time，如果是img类型，将自动下载文件到临时目录，并输出到目标目录中
+          out-dir: name #如果是img，则必填，与上层配置中的out-dir结合输出，目前是/data/excel/name
+          export-is: 1
+          validator:
+            required: true #是否必填
+            min-len: 0 #最小长度
+            max-len: 50 #最大长度
+
+        - key: phone #数据参数
+          val: 手机号 #Excel中标题名称
+          type: str #数据类型，目前包含str\int\float\img\time，如果是img类型，将自动下载文件到临时目录，并输出到目标目录中
+          out-dir: phone #如果是img，则必填，与上层配置中的out-dir结合输出，目前是/data/excel/name
+          export-is: 1
+          validator:
+            required: false #是否必填
+            min-len: 0 #最小长度
+            max-len: 50 #最大长度
+
+        - key: sex #数据参数
+          val: 性别 #Excel中标题名称
+          type: str #数据类型，目前包含str\int\float\img\time，如果是img类型，将自动下载文件到临时目录，并输出到目标目录中
+          out-dir: sex #如果是img，则必填，与上层配置中的out-dir结合输出，目前是/data/excel/name
+          export-is: 1
+          validator:
+            required: true #是否必填
+            min-len: 0 #最小长度
+            max-len: 50 #最大长度
+
+        - key: relation #数据参数
+          val: 户主关系 #Excel中标题名称
+          type: str #数据类型，目前包含str\int\float\img\time，如果是img类型，将自动下载文件到临时目录，并输出到目标目录中
+          out-dir: relation #如果是img，则必填，与上层配置中的out-dir结合输出，目前是/data/excel/name
+          export-is: 1
+          validator:
+            required: true #是否必填
+            min-len: 0 #最小长度
+            max-len: 50 #最大长度
+        - key: idcard #数据参数
+          val: 身份证号 #Excel中标题名称
+          type: str #数据类型，目前包含str\int\float\img\time，如果是img类型，将自动下载文件到临时目录，并输出到目标目录中
+          out-dir: idcard #如果是img，则必填，与上层配置中的out-dir结合输出，目前是/data/excel/name
+          export-is: 1
+          validator:
+            required: false #是否必填
+            min-len: 0 #最小长度
+            max-len: 50 #最大长度
+
+wx:
+  live:
+    configs:
+      - appid:  #微信小程序的appid
+        secret:   #微信小程序的Secret
+        token: #微信小程序消息服务器配置的token
+        aesKey: #微信小程序消息服务器配置的EncodingAESKey
+        msgDataFormat: JSON

@@ -1,0 +1,122 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+            http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.px</groupId>
+        <artifactId>shuanzheng</artifactId>
+        <version>1.0.0</version>
+    </parent>
+
+    <artifactId>shuanzheng-biz</artifactId>
+	<packaging>jar</packaging>
+
+	<description>archetype gen</description>
+
+	<dependencies>
+		<!--必备: 依赖api模块-->
+		<dependency>
+			<groupId>com.px</groupId>
+			<artifactId>shuanzheng-api</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-configuration-processor</artifactId>
+			<optional>true</optional>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger2</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.springfox</groupId>
+			<artifactId>springfox-swagger-ui</artifactId>
+			<version>${swagger.version}</version>
+		</dependency>
+		<!--可选：mybatis （需要链接数据库开启）-->
+		<dependency>
+			<groupId>com.pig4cloud</groupId>
+			<artifactId>px-common-mybatis</artifactId>
+			<version>${px.common.mybatis.version}</version>
+		</dependency>
+		<!--必备：web 模块-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<exclusions>
+				<!--排除tomcat依赖-->
+				<exclusion>
+					<artifactId>spring-boot-starter-tomcat</artifactId>
+					<groupId>org.springframework.boot</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<!--必备：undertow容器-->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-undertow</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.github.jedis-lock/jedis-lock -->
+		<dependency>
+			<groupId>com.github.jedis-lock</groupId>
+			<artifactId>jedis-lock</artifactId>
+			<version>${jedis.lock}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>cn.hutool</groupId>
+			<artifactId>hutool-all</artifactId>
+			<version>${hutool.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>com.px</groupId>
+			<artifactId>px-plugins-fastfile</artifactId>
+			<version>${px.plugins.fastfile.version}</version>
+
+			<exclusions>
+				<exclusion>
+					<groupId>com.pig4cloud</groupId>
+					<artifactId>px-common-basic</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>com.github.binarywang</groupId>
+			<artifactId>weixin-java-miniapp</artifactId>
+			<version>${weixin.java}</version>
+		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.apache.poi</groupId>-->
+<!--			<artifactId>poi</artifactId>-->
+<!--			<version>${apache.poi}</version>-->
+<!--		</dependency>-->
+		<dependency>
+			<groupId>com.px</groupId>
+			<artifactId>px-plugins-conversion-excel</artifactId>
+			<version>1.0.5</version>
+			<exclusions>
+				<exclusion>
+					<groupId>com.pig4cloud</groupId>
+					<artifactId>px-common-basic</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+    </dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+	</build>
+
+</project>
